@@ -1,3 +1,4 @@
+import { getUserQuery } from "@/graphql";
 import { GraphQLClient } from "graphql-request";
 
 const isProduction = process.env.NODE_ENV !== "production";
@@ -14,11 +15,16 @@ const serverUrl = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_SERVER_URL
   : "http://localhost:3000";
 
-const client = new GraphQLClient("apiUrl"); // only for the localhost
+const client = new GraphQLClient(apiUrl);
 
 const makeGraphQLRequest = async (query: string, variables = {}) => {
   try {
+    return await client.request(query, variables);
   } catch (error) {
     throw error;
   }
+};
+
+export const getUser = (email: string) => {
+  return makeGraphQLRequest(getUserQuery, { email });
 };
