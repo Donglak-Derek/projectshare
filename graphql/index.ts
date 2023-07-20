@@ -10,3 +10,18 @@ query GetUser($email: String!) {
         linkedInUrl
     }
 }`;
+
+export const createUserMutation = `
+mutation CreateUser($input: UserCreateInput!) {
+    userCreate(input: $input) {
+        user {
+            name
+            email
+            avatarUrl
+            description
+            githubUrl
+            linkedInUrl
+            id
+        }
+    }
+}`;
