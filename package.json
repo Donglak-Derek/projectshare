@@ -16,6 +16,7 @@
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
     "cloudinary": "^1.37.3",
+    "encoding": "^0.1.13",
     "graphql-request": "^6.1.0",
     "jsonwebtoken": "^9.0.1",
     "next": "13.4.10",
@@ -28,5 +29,20 @@
   },
   "devDependencies": {
     "@grafbase/sdk": "^0.2.1"
-  }
+  },
+  "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
+  "main": "next.config.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Donglak-Derek/projectshare.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Donglak-Derek/projectshare/issues"
+  },
+  "homepage": "https://github.com/Donglak-Derek/projectshare#readme"
 }
