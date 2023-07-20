@@ -9,7 +9,7 @@ const apiUrl = isProduction
 
 const apiKey = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_API_KEY || ""
-  : "1234";
+  : "letmein";
 
 const serverUrl = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_SERVER_URL
@@ -25,11 +25,8 @@ const makeGraphQLRequest = async (query: string, variables = {}) => {
   }
 };
 
-export const getUser = (email: string) => {
-  return makeGraphQLRequest(getUserQuery, { email });
-};
-
 export const createUser = (name: string, email: string, avatarUrl: string) => {
+  client.setHeader("x-api-key", apiKey);
   const variables = {
     input: {
       name,
@@ -38,4 +35,9 @@ export const createUser = (name: string, email: string, avatarUrl: string) => {
     },
   };
   return makeGraphQLRequest(createUserMutation, variables);
+};
+
+export const getUser = (email: string) => {
+  client.setHeader("x-api-key", apiKey);
+  return makeGraphQLRequest(getUserQuery, { email });
 };

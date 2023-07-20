@@ -7,7 +7,7 @@ query GetUser($email: String!) {
         avatarUrl
         description
         githubUrl
-        linkedinUrl
+        linkedInUrl
     }
 }`;
 
@@ -15,14 +15,13 @@ export const createUserMutation = `
 mutation CreateUser($input: UserCreateInput!){
     userCreate(inupt: $input){
         user {
-
-            id
             name
             email
             avatarUrl
             description
             githubUrl
-            linkedinUrl
+            linkedInUrl
+            id
         }
     }
 }
