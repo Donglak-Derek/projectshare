@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  headers: {
+    "Permissions-Policy": "interest-cohort=()",
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

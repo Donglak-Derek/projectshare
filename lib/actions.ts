@@ -1,7 +1,7 @@
-import { getUserQuery } from "@/graphql";
 import { GraphQLClient } from "graphql-request";
+import { getUserQuery } from "@/graphql";
 
-const isProduction = process.env.NODE_ENV !== "production";
+const isProduction = process.env.NODE_ENV === "production";
 
 const apiUrl = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_URL || ""
@@ -9,7 +9,7 @@ const apiUrl = isProduction
 
 const apiKey = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_API_KEY || ""
-  : "1234";
+  : "letmein";
 
 const serverUrl = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_SERVER_URL

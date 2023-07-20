@@ -1,8 +1,6 @@
-// save all the logged in users
-
 import { getServerSession } from "next-auth/next";
 import { NextAuthOptions, User } from "next-auth";
-import { Adapter, AdapterUser } from "next-auth/adapters";
+import { AdapterUser } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import jsonwebtoken from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
@@ -23,7 +21,7 @@ export const authOptions: NextAuthOptions = {
   //   },
   theme: {
     colorScheme: "light",
-    logo: "/logo.png",
+    logo: "/logo.svg",
   },
   callbacks: {
     async session({ session }) {
@@ -31,12 +29,12 @@ export const authOptions: NextAuthOptions = {
     },
     async signIn({ user }: { user: AdapterUser | User }) {
       try {
-        // when user exists
-        const userExists = (await getUser(user?.email as string)) as {
-          user?: UserProfile;
-        };
+        // // when user exists
+        // const userExists = (await getUser(user?.email as string)) as {
+        //   user?: UserProfile;
+        // };
 
-        // if they don't exist, create them
+        // // if they don't exist, create them
 
         return true;
       } catch (error: any) {
@@ -48,7 +46,7 @@ export const authOptions: NextAuthOptions = {
 };
 
 export async function getCurrentUser() {
-  const session = (await getServerSession(authOptions)) as SessionInterface;
+  const session = await getServerSession(authOptions);
 
   return session;
 }

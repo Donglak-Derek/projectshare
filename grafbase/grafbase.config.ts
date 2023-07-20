@@ -23,13 +23,6 @@ const Project = g.model("Project", {
   createdBy: g.relation(() => User),
 });
 
-const comment = g.model("Comment", {
-  project: g.relation(Project),
-  body: g.string(),
-  likes: g.int().default(0),
-  author: g.relation(() => User).optional(),
-});
-
 export default config({
   schema: g,
 });
