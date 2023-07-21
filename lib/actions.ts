@@ -25,6 +25,7 @@ const serverUrl = isProduction
 
 const client = new GraphQLClient(apiUrl);
 
+// Token
 export const fetchToken = async () => {
   try {
     const response = await fetch(`${serverUrl}/api/auth/token`); //default https://grafbase.com/guides/how-to-use-nextauthjs-as-your-jwt-provider-with-grafbase
@@ -57,13 +58,81 @@ const makeGraphQLRequest = async (query: string, variables = {}) => {
   }
 };
 
-export const fetchAllProjects = (
-  category?: string | null,
-  endcursor?: string | null
+// All projects - endcursor - to know which page are we on
+export const fetchAllProjects = async (
+  category?: string,
+  endcursor?: string
 ) => {
   client.setHeader("x-api-key", apiKey);
 
-  return makeGraphQLRequest(projectsQuery, { category, endcursor });
+  // Build query
+  let query: string;
+  let variables: any = { endcursor };
+  if (category) {
+    query = `
+      query getProjects($category: String, $endcursor: String) {
+        projectSearch(first: 8, after: $endcursor, filter: {category: {eq: $category}}) {
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
+          edges {
+            node {
+              title
+              githubUrl
+              description
+              liveSiteUrl
+              id
+              image
+              category
+              createdBy {
+                id
+                email
+                name
+                avatarUrl
+              }
+            }
+          }
+        }
+      }
+    `;
+    variables["category"] = category;
+  } else {
+    query = `
+      query getProjects($endcursor: String) {
+        projectSearch(first: 8, after: $endcursor) {
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
+          edges {
+            node {
+              title
+              githubUrl
+              description
+              liveSiteUrl
+              id
+              image
+              category
+              createdBy {
+                id
+                email
+                name
+                avatarUrl
+              }
+            }
+          }
+        }
+      }
+    `;
+  }
+
+  // Make request
+  return makeGraphQLRequest(query, variables);
 };
 
 // Creata a new project
@@ -134,6 +203,7 @@ export const getProjectDetails = (id: string) => {
   return makeGraphQLRequest(getProjectByIdQuery, { id });
 };
 
+// Create user
 export const createUser = (name: string, email: string, avatarUrl: string) => {
   client.setHeader("x-api-key", apiKey);
 
