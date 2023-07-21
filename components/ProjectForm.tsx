@@ -7,6 +7,8 @@ import Formfield from "./Formfield";
 import { categoryFilters } from "@/constants";
 import CustomMenu from "./CustomMenu";
 import Button from "./Button";
+import { createNewProject, fetchToken } from "@/lib/actions";
+import { useRouter } from "next/navigation";
 
 type Props = {
   type: string;
@@ -14,7 +16,28 @@ type Props = {
 };
 
 const ProjectForm = ({ type, session }: Props) => {
-  const handleFormSubmit = (e: React.FormEvent) => {};
+  const router = useRouter();
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setIsSubmitting(true);
+
+    // to get a token
+    const { token } = await fetchToken();
+
+    try {
+      if (type === "create") {
+        await createNewProject(form, session?.user?.id, token);
+
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -51,34 +74,35 @@ const ProjectForm = ({ type, session }: Props) => {
     githubUrl: "",
     category: "",
   });
+
   return (
     <form onSubmit={handleFormSubmit} className="flexStart form">
       <div className="flexStart form_image-container">
         <label htmlFor="poster" className="flexCenter form_image-label">
           {!form.image && "Choose a poster for your project"}
-
-          <input
-            id="image"
-            type="file"
-            accept="image/*"
-            required={type === "create"}
-            onChange={handleChangeImage}
-          />
-          {form.image && (
-            <Image
-              src={form?.image}
-              className="sm:p-10 object-contain z-20"
-              alt="Project Poster"
-              fill
-            />
-          )}
         </label>
+        <input
+          id="image"
+          type="file"
+          accept="image/*"
+          required={type === "create" ? true : false}
+          className="form-image-input"
+          onChange={(e) => handleChangeImage(e)}
+        />
+        {form.image && (
+          <Image
+            src={form?.image}
+            className="sm:p-10 object-contain z-20"
+            alt="Project Poster"
+            fill
+          />
+        )}
       </div>
 
       <Formfield
         title="Title"
         state={form.title}
-        placeholder="Codaaable"
+        placeholder="Codabbble"
         setState={(value) => handleStateChange("title", value)}
       />
       <Formfield
@@ -91,7 +115,7 @@ const ProjectForm = ({ type, session }: Props) => {
         type="url"
         title="Website URL"
         state={form.liveSiteUrl}
-        placeholder="https://Codaaable...."
+        placeholder="https://Codabbble...."
         setState={(value) => handleStateChange("liveSiteUrl", value)}
       />
       <Formfield

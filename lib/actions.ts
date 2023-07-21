@@ -27,13 +27,14 @@ const client = new GraphQLClient(apiUrl);
 
 export const fetchToken = async () => {
   try {
-    const response = await fetch(`${serverUrl}/api/auth/token`);
+    const response = await fetch(`${serverUrl}/api/auth/token`); //default https://grafbase.com/guides/how-to-use-nextauthjs-as-your-jwt-provider-with-grafbase
     return response.json();
   } catch (err) {
     throw err;
   }
 };
 
+// upload the image to the server
 export const uploadImage = async (imagePath: string) => {
   try {
     const response = await fetch(`${serverUrl}/api/upload`, {
@@ -65,6 +66,7 @@ export const fetchAllProjects = (
   return makeGraphQLRequest(projectsQuery, { category, endcursor });
 };
 
+// Creata a new project
 export const createNewProject = async (
   form: ProjectForm,
   creatorId: string,
@@ -89,6 +91,7 @@ export const createNewProject = async (
   }
 };
 
+// Update project
 export const updateProject = async (
   form: ProjectForm,
   projectId: string,

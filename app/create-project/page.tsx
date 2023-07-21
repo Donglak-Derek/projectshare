@@ -7,6 +7,7 @@ const CreateProject = async () => {
   const session = await getCurrentUser();
 
   if (!session?.user) redirect("./");
+
   return (
     <Modal>
       <h3 className="modal-head-text">Create a new Project</h3>
