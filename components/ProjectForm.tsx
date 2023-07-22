@@ -1,21 +1,23 @@
 "use client";
 
-import { SessionInterface } from "@/common.types";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
-import Formfield from "./Formfield";
-import { categoryFilters } from "@/constants";
-import CustomMenu from "./CustomMenu";
-import Button from "./Button";
-import { createNewProject, fetchToken } from "@/lib/actions";
 import { useRouter } from "next/navigation";
+
+import Formfield from "./Formfield";
+import Button from "./Button";
+import CustomMenu from "./CustomMenu";
+import { categoryFilters } from "@/constants";
+import { createNewProject, fetchToken, updateProject } from "@/lib/actions";
+import { FormState, ProjectInterface, SessionInterface } from "@/common.types";
 
 type Props = {
   type: string;
   session: SessionInterface;
+  project?: ProjectInterface;
 };
 
-const ProjectForm = ({ type, session }: Props) => {
+const ProjectForm = ({ type, session, project }: Props) => {
   const router = useRouter();
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -32,8 +34,18 @@ const ProjectForm = ({ type, session }: Props) => {
 
         router.push("/");
       }
+
+      if (type === "edit") {
+        await updateProject(form, project?.id as string, token);
+
+        router.push("/");
+      }
     } catch (error) {
-      console.log(error);
+      alert(
+        `Failed to ${
+          type === "create" ? "create" : "edit"
+        } a project. Try again!`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -47,7 +59,9 @@ const ProjectForm = ({ type, session }: Props) => {
     if (!file) return;
 
     if (!file.type.includes("image")) {
-      return alert("Please select an image file");
+      alert("Please select an image file");
+
+      return;
     }
 
     const reader = new FileReader();
@@ -61,18 +75,22 @@ const ProjectForm = ({ type, session }: Props) => {
     };
   };
 
-  const handleStateChange = (fieldName: string, value: string) => {
-    setform((prevState) => ({ ...prevState, [fieldName]: value }));
+  const handleStateChange = (fieldName: keyof FormState, value: string) => {
+    setForm((prevForm) => ({ ...prevForm, [fieldName]: value }));
   };
 
+  // const handleStateChange = (fieldName: string, value: string) => {
+  //   setform((prevState) => ({ ...prevState, [fieldName]: value }));
+  // };
+
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [form, setform] = useState({
-    title: "",
-    description: "",
-    image: "",
-    liveSiteUrl: "",
-    githubUrl: "",
-    category: "",
+  const [form, setForm] = useState({
+    title: project?.title || "",
+    description: project?.description || "",
+    image: project?.image || "",
+    liveSiteUrl: project?.liveSiteUrl || "",
+    githubUrl: project?.githubUrl || "",
+    category: project?.category || "",
   });
 
   return (
@@ -86,7 +104,7 @@ const ProjectForm = ({ type, session }: Props) => {
           type="file"
           accept="image/*"
           required={type === "create" ? true : false}
-          className="form-image-input"
+          className="form_image-input"
           onChange={(e) => handleChangeImage(e)}
         />
         {form.image && (
@@ -102,20 +120,20 @@ const ProjectForm = ({ type, session }: Props) => {
       <Formfield
         title="Title"
         state={form.title}
-        placeholder="Codabbble"
+        placeholder="Write title your project"
         setState={(value) => handleStateChange("title", value)}
       />
       <Formfield
         title="Description"
         state={form.description}
-        placeholder="Showcase and discover remarkable developer projects."
+        placeholder="Describe your project"
         setState={(value) => handleStateChange("description", value)}
       />
       <Formfield
         type="url"
         title="Website URL"
         state={form.liveSiteUrl}
-        placeholder="https://Codabbble...."
+        placeholder="Write the URL to your live site"
         setState={(value) => handleStateChange("liveSiteUrl", value)}
       />
       <Formfield
