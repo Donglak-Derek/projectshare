@@ -59,6 +59,15 @@ const makeGraphQLRequest = async (query: string, variables = {}) => {
 };
 
 // All projects - endcursor - to know which page are we on
+// export const fetchAllProjects = async (
+//   category?: string,
+//   endcursor?: string
+// ) => {
+//   client.setHeader("x-api-key", apiKey);
+
+//   return makeGraphQLRequest(projectsQuery, { category, endcursor });
+// };
+
 export const fetchAllProjects = async (
   category?: string,
   endcursor?: string
