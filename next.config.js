@@ -11,6 +11,9 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  headers: {
+    "Permissions-Policy": "interest-cohort=()",
+  },
 };
 
 module.exports = nextConfig;
