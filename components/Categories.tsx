@@ -1,6 +1,6 @@
 "use client";
 
-import { categoryFilters } from "@/constants";
+import { categoryFilters } from "@/constant";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const Categories = () => {
