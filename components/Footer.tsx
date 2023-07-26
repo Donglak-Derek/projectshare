@@ -29,13 +29,13 @@ const Footer = () => {
       <div className="flex flex-col gap-12 w-full">
         <div className="flex items-start flex-col">
           <Image
-            src="/logo-purple.svg"
+            src="/purple_codabbble_logo.svg"
             width={115}
             height={38}
             alt="ProjectShare"
           />
           <p className="text-start text-sm font-normal mt-5 max-w-xs">
-            Flexibbleis the world's leading community for creatives to share,
+            Codabbble is the world's leading community for creatives to share,
             grow, and get hired.
           </p>
         </div>
