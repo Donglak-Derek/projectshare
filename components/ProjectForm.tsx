@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import Formfield from "./Formfield";
 import Button from "./Button";
 import CustomMenu from "./CustomMenu";
-import { categoryFilters } from "@/constants";
+import { categoryFilters } from "@/constant";
 import { createNewProject, fetchToken, updateProject } from "@/lib/actions";
 import { FormState, ProjectInterface, SessionInterface } from "@/common.types";
 
